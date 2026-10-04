@@ -25,6 +25,12 @@ export const SettingsPage: React.FC = () => {
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'System');
   const [isMobile, setIsMobile] = useState(window.innerWidth < 640);
   
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [isUpdatingPassword, setIsUpdatingPassword] = useState(false);
+  const [showPasswordForm, setShowPasswordForm] = useState(false);
+  
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -84,6 +90,47 @@ export const SettingsPage: React.FC = () => {
   const handleLogout = async () => {
     await supabase.auth.signOut();
     navigate('/login');
+  };
+
+  const handlePasswordChange = async () => {
+    if (!currentPassword || !newPassword) {
+      setPasswordError('Please fill in both fields.');
+      return;
+    }
+    if (newPassword.length < 6) {
+      setPasswordError('New password must be at least 6 characters.');
+      return;
+    }
+    setIsUpdatingPassword(true);
+    setPasswordError('');
+
+    // Verify current password first for security
+    const { error: signInError } = await supabase.auth.signInWithPassword({
+      email: userEmail,
+      password: currentPassword
+    });
+
+    if (signInError) {
+      setPasswordError('Current password is incorrect.');
+      setIsUpdatingPassword(false);
+      return;
+    }
+
+    // Update to new password
+    const { error: updateError } = await supabase.auth.updateUser({
+      password: newPassword
+    });
+
+    setIsUpdatingPassword(false);
+
+    if (updateError) {
+      setPasswordError(updateError.message);
+    } else {
+      showToast('Password changed successfully!');
+      setCurrentPassword('');
+      setNewPassword('');
+      setShowPasswordForm(false);
+    }
   };
 
   return (
@@ -149,6 +196,28 @@ export const SettingsPage: React.FC = () => {
                 }} placeholder="Your Name" />} 
               />
               <SettingRow title="Email Address" sub={userEmail} action={<button className="btn sm ghost" onClick={handleLogout}>Log Out</button>} />
+              
+              <SettingRow 
+                title="Change Password" 
+                sub="Update your account password" 
+                action={<button className="btn sm ghost" onClick={() => setShowPasswordForm(!showPasswordForm)}>{showPasswordForm ? 'Cancel' : 'Change'}</button>} 
+              />
+              {showPasswordForm && (
+                <div style={{ padding: '16px', background: 'var(--bg)', borderRadius: '8px', margin: '0 16px 16px', border: '1px solid var(--line)' }}>
+                  {passwordError && <div style={{ color: 'var(--rc)', fontSize: '13px', marginBottom: '10px', fontWeight: 500 }}>{passwordError}</div>}
+                  <div style={{ marginBottom: '12px' }}>
+                    <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, marginBottom: '6px' }}>Current Password</label>
+                    <input type="password" value={currentPassword} onChange={e => setCurrentPassword(e.target.value)} className="in" style={{ width: '100%', maxWidth: '300px' }} placeholder="Enter current password" />
+                  </div>
+                  <div style={{ marginBottom: '12px' }}>
+                    <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, marginBottom: '6px' }}>New Password</label>
+                    <input type="password" value={newPassword} onChange={e => setNewPassword(e.target.value)} className="in" style={{ width: '100%', maxWidth: '300px' }} placeholder="At least 6 characters" />
+                  </div>
+                  <button className="btn sm" onClick={handlePasswordChange} disabled={isUpdatingPassword}>
+                    {isUpdatingPassword ? 'Updating...' : 'Save Password'}
+                  </button>
+                </div>
+              )}
             </div>
             
             <div className="card cp">
