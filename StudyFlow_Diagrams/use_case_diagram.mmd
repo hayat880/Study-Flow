@@ -1,0 +1,22 @@
+usecaseDiagram
+    actor Student
+    
+    package "StudyFlow System" {
+        usecase "Authenticate (Login/Register)" as UC1
+        usecase "Recover Password" as UC2
+        usecase "Manage Subjects" as UC3
+        usecase "Manage Tasks & Deadlines" as UC4
+        usecase "Mark Attendance" as UC5
+        usecase "Run Focus Session (Pomodoro)" as UC6
+        usecase "Generate AI Quiz" as UC7
+        usecase "View Analytics" as UC8
+    }
+    
+    Student --> UC1
+    Student --> UC2
+    Student --> UC3
+    Student --> UC4
+    Student --> UC5
+    Student --> UC6
+    Student --> UC7
+    Student --> UC8

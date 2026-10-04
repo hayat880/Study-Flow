@@ -1,0 +1,66 @@
+.content-sch {
+  padding: 18px 20px;
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 16px;
+  align-items: start;
+}
+.bar { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+.bar h3 { margin: 0 8px 0 4px; font-size: 16px; }
+.ib { width: 32px; height: 32px; border: 1px solid var(--field); border-radius: 8px; display: grid; place-items: center; background: var(--card); color: var(--ink); cursor: pointer; }
+.views { margin-left: auto; display: flex; border: 1px solid var(--field); border-radius: 8px; overflow: hidden; }
+.views span { padding: 7px 14px; font-size: 12.5px; font-weight: 500; color: var(--muted); border-left: 1px solid var(--field); cursor: pointer; }
+.views span:first-child { border-left: 0; }
+.views .on { background: var(--blue); color: #fff; font-weight: 600; }
+.cal { display: grid; grid-template-columns: repeat(7, 1fr); }
+.dow { padding: 8px; font-size: 12px; color: var(--muted); font-weight: 500; background: var(--bg); border-bottom: 1px solid var(--line); }
+.day { min-height: 84px; padding: 6px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); font-size: 12px; overflow: hidden; }
+.day:nth-child(7n+14) { border-right: 0; }
+.day .n { display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; font-weight: 600; font-size: 12px; }
+.day.out { background: var(--bg); color: var(--muted); }
+.day.today .n { background: var(--blue); color: #fff; }
+.day.sel { box-shadow: inset 0 0 0 2px var(--blue); }
+.ev { display: block; margin-top: 3px; padding: 2px 6px; border-radius: 5px; font-size: 11px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; border-left: 3px solid; }
+.ev.task { background: var(--tint); color: var(--blue); border-color: var(--blue); }
+.ev.study { background: var(--bg); color: var(--ink); border-color: var(--muted); }
+.ev.exam { background: var(--rb); color: var(--rc); border-color: var(--rc); }
+.more { display: block; margin-top: 3px; font-size: 11px; color: var(--muted); }
+.legend-sch { display: flex; gap: 16px; padding: 10px 14px; font-size: 12px; color: var(--muted); flex-wrap: wrap; }
+.legend-sch i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+.pad { padding: 16px; }
+.pad h3 { margin: 0; font-size: 15px; }
+.pad .sub { color: var(--muted); font-size: 12px; }
+.ag { display: flex; gap: 10px; padding: 10px 0; border-top: 1px solid var(--line); }
+.ag:first-of-type { border-top: 0; }
+.ag time { width: 56px; font-size: 12px; font-weight: 600; flex: none; }
+.ag .bar2 { width: 3px; border-radius: 2px; flex: none; background: var(--muted); }
+.ag.task .bar2 { background: var(--blue); }
+.ag.exam .bar2 { background: var(--rc); }
+.ag.cls .bar2 { background: var(--field); }
+.ag .t { font-weight: 600; font-size: 13px; display: block; }
+.ag .s { font-size: 12px; color: var(--muted); }
+.free { margin-top: 12px; padding: 10px 12px; background: var(--tint); color: var(--blue); border-radius: 8px; font-size: 12.5px; font-weight: 500; }
+
+@media (max-width: 768px) {
+  .content-sch {
+    grid-template-columns: 1fr;
+    padding: 14px;
+  }
+  .day {
+    min-height: 60px;
+  }
+  .bar {
+    justify-content: center;
+  }
+}
+
+/* Mobile specific calendar (mgrid) */
+.mgrid { display: grid; grid-template-columns: repeat(7, 1fr); padding: 4px 6px; text-align: center; }
+.mgrid .h { font-size: 11px; color: var(--muted); padding: 4px 0; }
+.mgrid .d { height: 40px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; font-size: 12.5px; font-weight: 500; border-radius: 8px; cursor: pointer; }
+.mgrid .d.out { color: var(--muted); opacity: 0.5; }
+.mgrid .d.today { color: var(--blue); font-weight: 700; }
+.mgrid .d.sel { background: var(--blue); color: #fff; }
+.mgrid .d u { display: block; width: 5px; height: 5px; border-radius: 50%; background: var(--blue); text-decoration: none; }
+.mgrid .d.sel u { background: #fff; }
+.mgrid .d u.r { background: var(--rc); }

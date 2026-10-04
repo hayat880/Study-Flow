@@ -1,0 +1,6 @@
+graph TD
+    User([Student]) --> UI[React Frontend]
+    UI --> Auth[Supabase Authentication]
+    UI --> Logic[Business Logic Layer]
+    Logic --> Data[Data Repository Layer]
+    Data --> DB[(Supabase PostgreSQL)]

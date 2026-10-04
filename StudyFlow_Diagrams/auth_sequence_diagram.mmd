@@ -1,0 +1,20 @@
+sequenceDiagram
+    participant User
+    participant Router as React Router
+    participant App as App.tsx
+    participant Supabase as Supabase Auth
+    
+    User->>App: Opens application
+    App->>Supabase: getSession()
+    Supabase-->>App: Returns active session (or null)
+    
+    alt Session is Valid
+        App->>Router: Renders Layout (Dashboard)
+    else Session is Null
+        App->>Router: Redirects to /login
+        Router->>User: Displays LoginPage
+    end
+    
+    User->>Supabase: Logs in with credentials
+    Supabase-->>App: Fires onAuthStateChange event
+    App->>Router: Redirects to Dashboard

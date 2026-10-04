@@ -1,0 +1,34 @@
+classDiagram
+    class User {
+        +UUID id
+        +String email
+        +String profileName
+    }
+    class Subject {
+        +UUID id
+        +String name
+        +String color
+        +String targetGrade
+    }
+    class Task {
+        +UUID id
+        +String title
+        +Date dueDate
+        +String priority
+        +Boolean isCompleted
+    }
+    class AttendanceRecord {
+        +UUID id
+        +Date date
+        +String status
+    }
+    class StudySession {
+        +UUID id
+        +Int durationMinutes
+        +Date sessionDate
+    }
+
+    User "1" -- "0..*" Subject : creates
+    Subject "1" -- "0..*" Task : has
+    Subject "1" -- "0..*" AttendanceRecord : tracks
+    Subject "1" -- "0..*" StudySession : logged under

@@ -1,0 +1,74 @@
+.desk-auth {
+  width: 900px;
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+  min-height: 600px;
+  margin: 40px auto;
+}
+.brand {
+  background: var(--navy);
+  color: #fff;
+  padding: 34px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+.brand h2 {
+  font-size: 24px;
+  line-height: 1.25;
+  margin: 60px 0 0;
+  font-weight: 600;
+}
+.brand p { margin: 0; color: #c6d3f0; font-size: 14px; }
+.brand ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
+.brand li { display: flex; gap: 10px; color: #dfe8fb; font-size: 13.5px; }
+.brand li::before {
+  content: ""; width: 6px; height: 6px; border-radius: 50%;
+  background: #7fa2ff; margin-top: 7px; flex: none;
+}
+.brand small { color: #9fb2dc; margin-top: auto; }
+.formside { display: grid; place-items: center; padding: 30px; background: var(--bg); }
+.panel { width: 100%; max-width: 380px; }
+.form h1 { margin: 0 0 4px; font-size: 22px; font-weight: 700; }
+.form .lead { margin: 0 0 20px; color: var(--muted); }
+.f { margin-bottom: 14px; }
+.f label { display: block; font-weight: 600; font-size: 13px; margin-bottom: 6px; }
+.f input, .f select {
+  width: 100%; height: 42px; padding: 0 12px; font: inherit;
+  color: var(--ink); background: var(--card); border: 1px solid var(--line);
+  border-radius: 8px;
+}
+.f input::placeholder { color: var(--muted); }
+.f input:focus { border-color: var(--blue); }
+.f .hint { font-size: 12px; color: var(--muted); margin-top: 5px; }
+.f.err input { border-color: var(--rc); }
+.f.err .hint { color: var(--rc); }
+.pw { position: relative; }
+.pw button {
+  position: absolute; right: 6px; top: 6px; height: 30px;
+  border: 0; background: none; color: var(--blue);
+  font: inherit; font-weight: 600; font-size: 12px;
+  cursor: pointer; padding: 0 8px;
+}
+.pw input { padding-right: 64px; }
+.row { display: flex; align-items: center; justify-content: space-between; margin: 2px 0 18px; font-size: 13px; }
+.chk { display: flex; gap: 8px; align-items: center; color: var(--ink); }
+.chk input { width: 16px; height: 16px; accent-color: var(--blue); }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.go {
+  width: 100%; height: 44px; border: 0; border-radius: 8px;
+  background: var(--blue); color: #fff; font: inherit;
+  font-weight: 600; font-size: 14px; cursor: pointer;
+}
+.go:hover { filter: brightness(.93); }
+.alt { text-align: center; margin: 18px 0 0; color: var(--muted); }
+.demo {
+  margin-top: 18px; padding: 10px 12px; border: 1px dashed var(--line);
+  border-radius: 8px; font-size: 12px; color: var(--muted);
+  background: var(--card);
+}
+.demo b { color: var(--ink); }

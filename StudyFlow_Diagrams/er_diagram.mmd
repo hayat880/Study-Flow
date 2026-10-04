@@ -1,0 +1,25 @@
+erDiagram
+    USERS ||--o{ SUBJECTS : "owns"
+    SUBJECTS ||--o{ TASKS : "has"
+    SUBJECTS ||--o{ ATTENDANCE : "tracks"
+    SUBJECTS ||--o{ NOTES : "contains"
+    SUBJECTS ||--o{ STUDY_SESSIONS : "logs"
+    
+    USERS {
+        uuid id PK
+        string email
+    }
+    SUBJECTS {
+        uuid id PK
+        uuid user_id FK
+        string name
+        string color
+    }
+    TASKS {
+        uuid id PK
+        uuid user_id FK
+        uuid subject_id FK
+        string title
+        timestamp due_date
+        boolean is_completed
+    }

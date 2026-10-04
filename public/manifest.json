@@ -1,0 +1,16 @@
+{
+  "name": "StudyFlow",
+  "short_name": "StudyFlow",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2563eb",
+  "description": "Your ultimate study dashboard.",
+  "icons": [
+    {
+      "src": "/icon.jpg",
+      "sizes": "192x192 512x512 1024x1024",
+      "type": "image/jpeg"
+    }
+  ]
+}

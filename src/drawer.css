@@ -1,0 +1,40 @@
+/* drawer */
+.veil{position:absolute;inset:0;background:rgba(15,25,50,.35);z-index:10}
+.drawer{position:absolute;top:0;right:0;bottom:0;width:380px;background:var(--card);border-left:1px solid var(--line);box-shadow:-8px 0 24px rgba(15,42,92,.15);flex-direction:column;z-index:20}
+.dh{display:flex;align-items:center;padding:16px 20px;border-bottom:1px solid var(--line)}
+.dh h3{margin:0;font-size:16px;margin-right:auto}
+.db{padding:18px 20px;overflow:auto;flex:1}
+.df{padding:14px 20px;border-top:1px solid var(--line);display:flex;gap:10px;justify-content:flex-end}
+.f{margin-bottom:14px}
+.f label{display:block;font-weight:600;font-size:13px;margin-bottom:6px}
+.f label i{color:var(--rc);font-style:normal}
+.f .in,.f textarea{width:100%;height:40px;padding:0 12px}
+.f textarea{height:76px;padding:10px 12px;font:inherit;font-size:13px;border:1px solid var(--field);border-radius:8px;background:var(--card);color:var(--ink);resize:none}
+.f .hint{font-size:12px;color:var(--muted);margin-top:5px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.seg{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--field);border-radius:8px;overflow:hidden}
+.seg span{text-align:center;padding:9px 0;font-size:12.5px;font-weight:500;border-left:1px solid var(--field);color:var(--muted);cursor:pointer}
+.seg span:first-child{border-left:0}
+.seg span.on{background:var(--blue);color:#fff;font-weight:600}
+
+/* modal */
+.modal{position:fixed;top:50%;left:50%;transform:translate(-50%, -50%);width:380px;background:var(--card);border:1px solid var(--line);border-radius:12px;box-shadow:0 12px 40px rgba(0,0,0,0.12);z-index:30;display:flex;flex-direction:column;max-width:90vw}
+.modal .mh{padding:16px 20px;border-bottom:1px solid var(--line);font-weight:600;font-size:16px;}
+.modal .mb{padding:20px;font-size:14px;color:var(--muted);line-height:1.5;}
+.modal .mf{padding:14px 20px;border-top:1px solid var(--line);display:flex;gap:10px;justify-content:flex-end;}
+.modal-veil{position:fixed;inset:0;background:rgba(15,25,50,.5);z-index:25;backdrop-filter:blur(2px);}
+
+@media (max-width: 639px) {
+  .drawer {
+    width: 100%;
+    position: fixed;
+    z-index: 100;
+  }
+  .veil {
+    position: fixed;
+    z-index: 90;
+  }
+  .g2 {
+    grid-template-columns: 1fr;
+  }
+}

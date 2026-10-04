@@ -1,0 +1,21 @@
+flowchart TB
+    subgraph Presentation Layer
+        Pages[React Pages]
+        Components[Shared UI Components]
+    end
+    subgraph Business Logic Layer
+        Services[Services / Managers]
+        Logic[Pure Logic Math/Dates]
+    end
+    subgraph Data Access Layer
+        Repos[Repositories]
+    end
+    subgraph Backend
+        Supabase[Supabase PostgreSQL]
+        Auth[Supabase Auth]
+    end
+
+    Pages --> Services
+    Services --> Repos
+    Repos --> Supabase
+    Pages --> Auth
