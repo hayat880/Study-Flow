@@ -109,7 +109,7 @@ export const RegisterPage: React.FC = () => {
               </div>
               <div className="f">
                 <label>Email</label>
-                <input name="email" type="email" value={formData.email} onChange={handleChange} placeholder="name@university.edu" autoComplete="email" required />
+                <input name="email" type="email" value={formData.email} onChange={handleChange} placeholder="name@example.com" autoComplete="email" required />
               </div>
               <div className="f">
                 <label>University</label>

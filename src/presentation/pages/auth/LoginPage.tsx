@@ -127,7 +127,7 @@ export const LoginPage: React.FC = () => {
                     <label>Email</label>
                     <input 
                       type="email" 
-                      placeholder="name@university.edu" 
+                      placeholder="name@example.com" 
                       autoComplete="email" 
                       value={email}
                       onChange={e => setEmail(e.target.value)}
