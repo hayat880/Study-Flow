@@ -111,11 +111,12 @@ export const DashboardPage: React.FC = () => {
         if (!readNotifs.includes(`task-upcoming-${t.id}`)) count++;
       }
     });
+    const globalThreshold = parseInt(localStorage.getItem('globalAttendanceThreshold') || '75');
     subjects.forEach(sub => {
       const subAtt = attendance.filter(a => a.subjectId === sub.id);
       if (subAtt.length > 0) {
         const pres = subAtt.filter(a => a.status === 'Present' || a.status === 'Late').length;
-        if (Math.round((pres / subAtt.length) * 100) < (sub.attendanceThreshold || 75)) {
+        if (Math.round((pres / subAtt.length) * 100) < (sub.attendanceThreshold || globalThreshold)) {
           if (!readNotifs.includes(`att-warn-${sub.id}`)) count++;
         }
       }

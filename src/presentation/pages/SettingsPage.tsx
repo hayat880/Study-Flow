@@ -239,7 +239,28 @@ export const SettingsPage: React.FC = () => {
             
             <div className="card cp">
               <h3>Preferences</h3>
-              <SettingRow title="Minimum attendance" sub="Used for warnings and predictions" action={<input className="in" style={{ width: 130 }} defaultValue="75%" disabled />} />
+              <SettingRow 
+                title="Minimum attendance (%)" 
+                sub="Used for warnings and predictions" 
+                action={
+                  <input 
+                    className="in" 
+                    type="number" 
+                    style={{ width: 130 }} 
+                    defaultValue={localStorage.getItem('globalAttendanceThreshold') || '75'} 
+                    onBlur={(e) => {
+                      const val = parseInt(e.target.value);
+                      if (!isNaN(val) && val >= 0 && val <= 100) {
+                        localStorage.setItem('globalAttendanceThreshold', val.toString());
+                        showToast('Attendance threshold saved!');
+                      } else {
+                        e.target.value = localStorage.getItem('globalAttendanceThreshold') || '75';
+                        showToast('Please enter a valid percentage (0-100)');
+                      }
+                    }} 
+                  />
+                } 
+              />
               <SettingRow title="Theme" sub="Light, dark or system" action={
                 <select className="in" style={{ width: 130 }} value={theme} onChange={handleThemeChange}>
                   <option value="System">System</option>

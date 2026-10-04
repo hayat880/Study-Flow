@@ -102,13 +102,13 @@ export const NotificationsPage: React.FC = () => {
       }
     });
 
-    // 2. Attendance Warnings
+    const globalThreshold = parseInt(localStorage.getItem('globalAttendanceThreshold') || '75');
     subjects.forEach(sub => {
       const subAtt = attendance.filter(a => a.subjectId === sub.id);
       if (subAtt.length > 0) {
         const presentCount = subAtt.filter(a => a.status === 'Present' || a.status === 'Late').length;
         const pct = Math.round((presentCount / subAtt.length) * 100);
-        const threshold = sub.attendanceThreshold || 75;
+        const threshold = sub.attendanceThreshold || globalThreshold;
 
         if (pct < threshold) {
           notifs.push({
