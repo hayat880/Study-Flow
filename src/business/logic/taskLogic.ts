@@ -41,7 +41,7 @@ export function isCompletedToday(task: Task, now: Date = new Date()): boolean {
  */
 export function isTaskOverdue(task: Task, now: Date = new Date()): boolean {
   if (!task.dueDate) return false;
-  if (task.status === 'completed' || task.status === 'cancelled') return false;
+  if (task.status === 'completed') return false;
   
   const dueDate = new Date(task.dueDate);
   return dueDate.getTime() < now.getTime();
@@ -52,7 +52,7 @@ export function isTaskOverdue(task: Task, now: Date = new Date()): boolean {
  */
 export function isTaskUpcoming(task: Task, now: Date = new Date()): boolean {
   if (!task.dueDate) return false;
-  if (task.status === 'completed' || task.status === 'cancelled') return false;
+  if (task.status === 'completed') return false;
   
   const dueDate = toMidnightDate(task.dueDate);
   const today = toMidnightDate(now);

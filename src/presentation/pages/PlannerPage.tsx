@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useMemo, useRef } from 'react';
-import { Plus, Play, Pause, Square, Trash2, Check, Clock } from 'lucide-react';
+import React, { useState, useEffect, useMemo } from 'react';
+import { Plus, Play, Trash2 } from 'lucide-react';
 import { plannerService } from '../../business/services/plannerService';
 import { subjectService } from '../../business/services/subjectService';
 import { taskService } from '../../business/services/taskService';

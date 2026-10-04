@@ -69,7 +69,7 @@ export const ExamsPage: React.FC = () => {
         const updated = await taskService.updateTask(editingExamId, {
           title: newExamTitle,
           dueDate: new Date(newExamDate).toISOString(),
-          subjectId: newExamSubject || undefined
+          subjectId: newExamSubject || ''
         });
         setExams(exams.map(e => e.id === editingExamId ? updated : e));
       } else {
@@ -79,7 +79,7 @@ export const ExamsPage: React.FC = () => {
           priority: 'high',
           status: 'pending',
           eventType: 'Exam',
-          subjectId: newExamSubject || undefined
+          subjectId: newExamSubject || ''
         });
         const newExams = [...exams, added];
         setExams(newExams);
@@ -106,7 +106,7 @@ export const ExamsPage: React.FC = () => {
           await taskService.deleteTask(id);
           const newExams = exams.filter(e => e.id !== id);
           setExams(newExams);
-          if (selectedExamId === id) setSelectedExamId(newExams.length > 0 ? newExams[0].id : null);
+          if (selectedExamId === id) setSelectedExamId(newExams.length > 0 ? newExams[0].id : '');
         } catch (e: any) {
           console.error(e);
           setErrorMsg("Failed to delete exam.");

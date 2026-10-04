@@ -144,7 +144,7 @@ export const AttendancePage: React.FC = () => {
   const allPresent = records.filter(r => r.status === 'Present' || r.status === 'Late').length;
   const overallPercentage = allTotal > 0 ? Math.round((allPresent / allTotal) * 100) : 100;
   
-  const subjectsBelowMin = subjects.filter(s => getSubjectStats(s).isBelow);
+  const subjectsBelowMin = subjects.filter(s => !getSubjectStats(s).isSafe);
   const absencesThisMonth = records.filter(r => {
     if (r.status === 'Present' || r.status === 'Late') return false;
     const d = new Date(r.date);

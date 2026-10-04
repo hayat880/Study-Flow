@@ -7,7 +7,7 @@ import { plannerService } from '../../business/services/plannerService';
 import { attendanceService } from '../../business/services/attendanceService';
 import { timetableService } from '../../business/services/timetableService';
 import { noteService } from '../../business/services/noteService';
-import { isTaskDueToday, isTaskUpcoming, isTaskOverdue, isCompletedToday, calculateTodayProgress } from '../../business/logic/taskLogic';
+import { isTaskDueToday, isTaskOverdue, isCompletedToday, calculateTodayProgress } from '../../business/logic/taskLogic';
 import type { Task, Subject, StudySession, AttendanceRecord, TimetableClass, Note } from '../../types/index';
 import './dashboard.css';
 import './other-pages.css';
@@ -140,7 +140,7 @@ export const DashboardPage: React.FC = () => {
   };
 
   const now = new Date();
-  const { todayTotal, completedDueToday, remainingToday, completionPercentage } = calculateTodayProgress(tasks, now);
+  const { remainingToday } = calculateTodayProgress(tasks, now);
   const overdueCount = tasks.filter(t => isTaskOverdue(t, now)).length;
   
   // Table tasks
@@ -243,7 +243,7 @@ export const DashboardPage: React.FC = () => {
       if (!searchQuery) return true;
       const q = searchQuery.toLowerCase();
       const sub = subjects.find(s => s.id === c.subjectId);
-      return (sub && sub.name.toLowerCase().includes(q)) || c.room.toLowerCase().includes(q);
+      return (sub && sub.name.toLowerCase().includes(q)) || (c.room && c.room.toLowerCase().includes(q));
     }).sort((a,b) => a.startTime.localeCompare(b.startTime));
   }, [classes, searchQuery, subjects]);
 

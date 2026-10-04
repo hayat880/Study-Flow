@@ -12,7 +12,6 @@ export const SchedulePage: React.FC = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [subjects, setSubjects] = useState<Subject[]>([]);
   const [classes, setClasses] = useState<TimetableClass[]>([]);
-  const [loading, setLoading] = useState(true);
 
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -39,7 +38,6 @@ export const SchedulePage: React.FC = () => {
 
   async function loadData() {
     try {
-      setLoading(true);
       const [t, s, c] = await Promise.all([
         taskService.getTasks(),
         subjectService.getSubjects(),
@@ -50,8 +48,6 @@ export const SchedulePage: React.FC = () => {
       setClasses(c);
     } catch (e) {
       console.error(e);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -63,22 +59,22 @@ export const SchedulePage: React.FC = () => {
         const updated = await taskService.updateTask(newEvent.id, {
           title: newEvent.title,
           description: newEvent.description || '',
-          dueDate: newEvent.dueDate,
+          dueDate: newEvent.dueDate || '',
           priority: newEvent.priority as any,
           status: newEvent.status as any,
           eventType: newEvent.eventType as any,
-          subjectId: newEvent.subjectId || undefined,
+          subjectId: newEvent.subjectId || '',
         });
         setTasks(tasks.map(t => t.id === updated.id ? updated : t));
       } else {
         const added = await taskService.addTask({
           title: newEvent.title,
           description: newEvent.description || '',
-          dueDate: newEvent.dueDate,
+          dueDate: newEvent.dueDate || '',
           priority: newEvent.priority as any,
           status: newEvent.status as any,
           eventType: newEvent.eventType as any,
-          subjectId: newEvent.subjectId || undefined,
+          subjectId: newEvent.subjectId || '',
         });
         setTasks([...tasks, added]);
       }

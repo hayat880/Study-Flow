@@ -35,7 +35,7 @@ function App() {
       window.location.href = '/login' + window.location.hash;
     }
     
-    const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
+    const { data: authListener } = supabase.auth.onAuthStateChange((event) => {
       if (event === 'PASSWORD_RECOVERY') {
         window.location.href = '/login#type=recovery';
       }

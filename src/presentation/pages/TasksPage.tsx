@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Plus, Search, Check, RefreshCcw } from 'lucide-react';
 import { taskService } from '../../business/services/taskService';
 import { subjectService } from '../../business/services/subjectService';
-import { isTaskDueToday, isTaskUpcoming, isTaskOverdue, isCompletedToday } from '../../business/logic/taskLogic';
+import { isTaskDueToday, isTaskUpcoming, isTaskOverdue } from '../../business/logic/taskLogic';
 import type { Task, Subject } from '../../types/index';
 
 export const TasksPage: React.FC = () => {
@@ -84,7 +84,7 @@ export const TasksPage: React.FC = () => {
       setSaving(true);
       const taskData = {
         title: newTask.title,
-        subjectId: newTask.subjectId === "" ? undefined : newTask.subjectId,
+        subjectId: newTask.subjectId || '',
         dueDate: newTask.dueDate ? new Date(newTask.dueDate).toISOString() : undefined,
         priority: newTask.priority,
         status: newTask.status,
