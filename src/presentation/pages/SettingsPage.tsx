@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './other-pages.css';
 import { supabase } from '../../lib/supabase';
 import { useNavigate, Link } from 'react-router-dom';
-import { Book, Grid, FileText, History, LineChart, GraduationCap, Map, Bot } from 'lucide-react';
+import { Book, Grid, FileText, History, LineChart, GraduationCap, Map, Bot, Eye, EyeOff } from 'lucide-react';
 
 const SettingRow = ({ title, sub, action }: any) => (
   <div className="set">
@@ -30,6 +30,7 @@ export const SettingsPage: React.FC = () => {
   const [passwordError, setPasswordError] = useState('');
   const [isUpdatingPassword, setIsUpdatingPassword] = useState(false);
   const [showPasswordForm, setShowPasswordForm] = useState(false);
+  const [showPasswords, setShowPasswords] = useState(false);
   
   const navigate = useNavigate();
 
@@ -97,8 +98,8 @@ export const SettingsPage: React.FC = () => {
       setPasswordError('Please fill in both fields.');
       return;
     }
-    if (newPassword.length < 6) {
-      setPasswordError('New password must be at least 6 characters.');
+    if (newPassword.length < 8) {
+      setPasswordError('New password must be at least 8 characters.');
       return;
     }
     setIsUpdatingPassword(true);
@@ -205,13 +206,29 @@ export const SettingsPage: React.FC = () => {
               {showPasswordForm && (
                 <div style={{ padding: '16px', background: 'var(--bg)', borderRadius: '8px', margin: '0 16px 16px', border: '1px solid var(--line)' }}>
                   {passwordError && <div style={{ color: 'var(--rc)', fontSize: '13px', marginBottom: '10px', fontWeight: 500 }}>{passwordError}</div>}
-                  <div style={{ marginBottom: '12px' }}>
+                  <div style={{ marginBottom: '12px', position: 'relative', maxWidth: '300px' }}>
                     <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, marginBottom: '6px' }}>Current Password</label>
-                    <input type="password" value={currentPassword} onChange={e => setCurrentPassword(e.target.value)} className="in" style={{ width: '100%', maxWidth: '300px' }} placeholder="Enter current password" />
+                    <div style={{ position: 'relative' }}>
+                      <input type={showPasswords ? "text" : "password"} value={currentPassword} onChange={e => setCurrentPassword(e.target.value)} className="in" style={{ width: '100%', paddingRight: '36px' }} placeholder="Enter current password" />
+                      <button 
+                        onClick={() => setShowPasswords(!showPasswords)}
+                        style={{ position: 'absolute', right: 8, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--muted)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                      >
+                        {showPasswords ? <EyeOff size={16} /> : <Eye size={16} />}
+                      </button>
+                    </div>
                   </div>
-                  <div style={{ marginBottom: '12px' }}>
+                  <div style={{ marginBottom: '12px', position: 'relative', maxWidth: '300px' }}>
                     <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, marginBottom: '6px' }}>New Password</label>
-                    <input type="password" value={newPassword} onChange={e => setNewPassword(e.target.value)} className="in" style={{ width: '100%', maxWidth: '300px' }} placeholder="At least 6 characters" />
+                    <div style={{ position: 'relative' }}>
+                      <input type={showPasswords ? "text" : "password"} value={newPassword} onChange={e => setNewPassword(e.target.value)} className="in" style={{ width: '100%', paddingRight: '36px' }} placeholder="At least 8 characters" />
+                      <button 
+                        onClick={() => setShowPasswords(!showPasswords)}
+                        style={{ position: 'absolute', right: 8, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--muted)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                      >
+                        {showPasswords ? <EyeOff size={16} /> : <Eye size={16} />}
+                      </button>
+                    </div>
                   </div>
                   <button className="btn sm" onClick={handlePasswordChange} disabled={isUpdatingPassword}>
                     {isUpdatingPassword ? 'Updating...' : 'Save Password'}
