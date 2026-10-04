@@ -23,6 +23,7 @@ export const DashboardPage: React.FC = () => {
   const [userEmail, setUserEmail] = useState('User');
   const [profileName, setProfileName] = useState(localStorage.getItem('profileName') || '');
   const [searchQuery, setSearchQuery] = useState('');
+  const [readNotifs, setReadNotifs] = useState<string[]>([]);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 640);
 
   const getInitials = (name: string) => {
@@ -42,6 +43,14 @@ export const DashboardPage: React.FC = () => {
     loadData();
     const handleProfileChange = () => setProfileName(localStorage.getItem('profileName') || '');
     window.addEventListener('profileNameChanged', handleProfileChange);
+    
+    try {
+      const stored = localStorage.getItem('readNotifs');
+      if (stored) {
+        setReadNotifs(JSON.parse(stored));
+      }
+    } catch (e) {}
+
     return () => window.removeEventListener('profileNameChanged', handleProfileChange);
   }, []);
 
@@ -73,6 +82,14 @@ export const DashboardPage: React.FC = () => {
       const { data } = await supabase.auth.getUser();
       if (data.user) {
         setUserEmail(data.user.email || 'User');
+        const { data: profile } = await supabase.from('profiles').select('full_name').eq('id', data.user.id).single();
+        if (profile && profile.full_name) {
+           if (!localStorage.getItem('profileName') || localStorage.getItem('profileName') !== profile.full_name) {
+             localStorage.setItem('profileName', profile.full_name);
+             setProfileName(profile.full_name);
+             window.dispatchEvent(new Event('profileNameChanged'));
+           }
+        }
       }
     } catch (e) {
       console.error(e);
@@ -86,19 +103,25 @@ export const DashboardPage: React.FC = () => {
       if (t.status === 'completed' || !t.dueDate) return;
       const due = new Date(t.dueDate);
       const diffHours = (due.getTime() - now.getTime()) / (1000 * 60 * 60);
-      if (diffHours < 0) count++; // overdue
-      else if (t.eventType === 'Exam' && diffHours / 24 <= 7) count++; // upcoming exam
-      else if (diffHours / 24 <= 2) count++; // upcoming task
+      if (diffHours < 0) {
+        if (!readNotifs.includes(`task-overdue-${t.id}`)) count++;
+      } else if (t.eventType === 'Exam' && diffHours / 24 <= 7) {
+        if (!readNotifs.includes(`exam-upcoming-${t.id}`)) count++;
+      } else if (diffHours / 24 <= 2) {
+        if (!readNotifs.includes(`task-upcoming-${t.id}`)) count++;
+      }
     });
     subjects.forEach(sub => {
       const subAtt = attendance.filter(a => a.subjectId === sub.id);
       if (subAtt.length > 0) {
         const pres = subAtt.filter(a => a.status === 'Present' || a.status === 'Late').length;
-        if (Math.round((pres / subAtt.length) * 100) < (sub.attendanceThreshold || 75)) count++;
+        if (Math.round((pres / subAtt.length) * 100) < (sub.attendanceThreshold || 75)) {
+          if (!readNotifs.includes(`att-warn-${sub.id}`)) count++;
+        }
       }
     });
     return count;
-  }, [tasks, subjects, attendance]);
+  }, [tasks, subjects, attendance, readNotifs]);
 
   const toggleTheme = () => {
     const root = document.documentElement;
