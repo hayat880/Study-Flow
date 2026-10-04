@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { supabase } from './lib/supabase';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Layout } from './presentation/components/layout/Layout';
 import { DashboardPage } from './presentation/pages/DashboardPage';
 import { TasksPage } from './presentation/pages/TasksPage';
@@ -19,6 +19,34 @@ import { SettingsPage } from './presentation/pages/SettingsPage';
 import { ExamsPage } from './presentation/pages/ExamsPage';
 import { PlannerPage } from './presentation/pages/PlannerPage';
 import { NotificationsPage } from './presentation/pages/NotificationsPage';
+
+function ProtectedRoute({ children }: { children: React.ReactNode }) {
+  const [session, setSession] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      setLoading(false);
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  if (loading) {
+    return <div style={{ display: 'flex', height: '100vh', justifyContent: 'center', alignItems: 'center' }}>Loading...</div>;
+  }
+
+  if (!session) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return <>{children}</>;
+}
 
 function App() {
   React.useEffect(() => {
@@ -52,7 +80,7 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         
-        <Route path="/" element={<Layout />}>
+        <Route path="/" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
           <Route index element={<DashboardPage />} />
           <Route path="tasks" element={<TasksPage />} />
           <Route path="attendance" element={<AttendancePage />} />
