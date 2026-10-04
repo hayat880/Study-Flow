@@ -20,6 +20,16 @@ export const NotificationsPage: React.FC = () => {
   const [subjects, setSubjects] = useState<Subject[]>([]);
   const [attendance, setAttendance] = useState<AttendanceRecord[]>([]);
   const [loading, setLoading] = useState(true);
+  const [readNotifs, setReadNotifs] = useState<string[]>([]);
+
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem('readNotifs');
+      if (stored) {
+        setReadNotifs(JSON.parse(stored));
+      }
+    } catch (e) {}
+  }, []);
 
   useEffect(() => {
     async function loadData() {
@@ -116,18 +126,30 @@ export const NotificationsPage: React.FC = () => {
     // Sort by timestamp (most urgent / recent first)
     // For overdue, smaller timestamp (more in the past) = first? Actually let's just sort by timestamp desc, but wait.
     // Overdue is past, Upcoming is future.
-    // Let's sort simply by type first (danger, warning, info)
     const typeWeight = { danger: 3, warning: 2, info: 1 };
-    return notifs.sort((a, b) => typeWeight[b.type] - typeWeight[a.type]);
+    return notifs
+      .filter(n => !readNotifs.includes(n.id))
+      .sort((a, b) => typeWeight[b.type] - typeWeight[a.type]);
     
-  }, [tasks, subjects, attendance, loading]);
+  }, [tasks, subjects, attendance, loading, readNotifs]);
+
+  const handleMarkAllRead = () => {
+    const allIds = notifications.map(n => n.id);
+    if (allIds.length === 0) return;
+    
+    const newReadNotifs = Array.from(new Set([...readNotifs, ...allIds]));
+    setReadNotifs(newReadNotifs);
+    localStorage.setItem('readNotifs', JSON.stringify(newReadNotifs));
+  };
 
   return (
     <>
       <div className="hdr">
         <h2>Notifications</h2>
         <div className="r">
-          <button className="btn">Mark all as read</button>
+          <button className="btn" onClick={handleMarkAllRead} disabled={notifications.length === 0 || loading} style={{ opacity: notifications.length === 0 ? 0.5 : 1 }}>
+            Mark all as read
+          </button>
         </div>
       </div>
       <div className="content">
