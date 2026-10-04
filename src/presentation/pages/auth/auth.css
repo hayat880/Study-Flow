@@ -1,5 +1,6 @@
 .desk-auth {
-  width: 900px;
+  width: 100%;
+  max-width: 900px;
   display: grid;
   grid-template-columns: 380px 1fr;
   background: var(--card);
@@ -72,3 +73,25 @@
   background: var(--card);
 }
 .demo b { color: var(--ink); }
+
+@media (max-width: 800px) {
+  .desk-auth {
+    grid-template-columns: 1fr;
+    margin: 16px;
+    width: calc(100% - 32px);
+    min-height: auto;
+  }
+  .brand {
+    padding: 24px;
+  }
+  .brand h2 {
+    margin: 20px 0 0;
+    font-size: 20px;
+  }
+  .formside {
+    padding: 24px 20px;
+  }
+  .two {
+    grid-template-columns: 1fr;
+  }
+}
